@@ -122,6 +122,7 @@ impl GenServer for EthrexMonitor {
             handle.clone(),
             Self::CastMsg::Tick,
         );
+        // Only l2 comment
         // Event handling
         spawn_listener(
             handle.clone(),

@@ -62,6 +62,7 @@ pub const SNAP_LIMIT: usize = 128;
 //
 // Note: We noticed that while bigger values are supported
 // increasing them may be the cause of peers disconnection
+// l1 comment
 pub const MAX_BLOCK_BODIES_TO_REQUEST: usize = 128;
 
 /// An abstraction over the [Kademlia] containing logic to make requests to peers

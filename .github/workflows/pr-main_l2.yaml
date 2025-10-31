@@ -35,7 +35,11 @@ jobs:
               - ".github/workflows/pr-main_l2.yaml"
               - "cmd/ethrex/l2/**"
       - name: Print result
-        run: echo "run_tests=${{ steps.filter.outputs.run_tests }}"
+        run: |
+            if [[ "${GITHUB_EVENT_NAME}" != "pull_request" ]]; then
+              echo "run_tests=true"
+            else
+              echo "run_tests=${{ steps.filter.outputs.run_tests }}"
   lint:
     # "Lint" is a required check, don't change the name
     name: Lint

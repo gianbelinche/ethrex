@@ -30,9 +30,10 @@ jobs:
         - name: Print result
           run: |
             if [[ "${GITHUB_EVENT_NAME}" != "pull_request" ]]; then
-              echo "run_tests=true"
+                echo "run_tests=true"
             else
-              echo "run_tests=${{ steps.filter.outputs.run_tests }}"
+                echo "run_tests=false"
+            fi
 
   
   name: Compute which jobs should run

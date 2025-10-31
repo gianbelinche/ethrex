@@ -28,7 +28,24 @@ jobs:
               run_tests:
                 - '!crates/l2/**'
         - name: Print result
-          run: echo "run_tests=${{ steps.filter.outputs.run_tests }}"
+          run: |
+            if [[ "${GITHUB_EVENT_NAME}" != "pull_request" ]]; then
+              echo "run_tests=true"
+            else
+              echo "run_tests=${{ steps.filter.outputs.run_tests }}"
+
+  
+  name: Compute which jobs should run
+  id: compute
+  run: |
+    if [[ "${GITHUB_EVENT_NAME}" != "pull_request" ]]; then
+      # On push to main, run everything
+      echo "run_l1=true" >> $GITHUB_OUTPUT
+      echo "run_l2=true" >> $GITHUB_OUTPUT
+    else
+      # On PR, run based on paths filter
+      echo "run_l1=${{ steps.filter.outputs.other }}" >> $GITHUB_OUTPUT
+      echo "run_l2=${{ steps.filter.outputs.l2 }}" >> $GITHUB_OUTPUT
 
   lint:
     # "Lint" is a required check, don't change the name

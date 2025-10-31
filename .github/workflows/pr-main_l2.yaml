@@ -20,7 +20,7 @@ jobs:
   detect-changes:
     runs-on: ubuntu-latest
     outputs:
-      run_tests: ${{ steps.filter.outputs.run_tests }}
+      run_tests: ${{ steps.finish.outputs.run_tests }}
     steps:
       - uses: actions/checkout@v4
       - uses: dorny/paths-filter@v3
@@ -34,13 +34,13 @@ jobs:
               - "crates/vm/levm/**"
               - ".github/workflows/pr-main_l2.yaml"
               - "cmd/ethrex/l2/**"
-      - name: Print result
+      - name: finish
         run: |
-            if [[ "${GITHUB_EVENT_NAME}" != "pull_request" ]]; then
-                echo "run_tests=true"
-            else
-                echo "run_tests=false"
-            fi
+          if [[ "${GITHUB_EVENT_NAME}" != "pull_request" ]]; then
+              echo "run_tests=true" >> "$GITHUB_OUTPUT"
+          else
+              echo "run_tests=${{ steps.filter.outputs.run_tests }}" >> "$GITHUB_OUTPUT"
+          fi
   lint:
     # "Lint" is a required check, don't change the name
     name: Lint
